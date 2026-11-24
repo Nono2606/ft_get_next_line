@@ -1,4 +1,4 @@
-*This project has been created as part of the 42 curriculum by <login>.*
+*This project has been created as part of the 42 curriculum by nhussene.*
 
 # get_next_line
 
@@ -39,7 +39,7 @@ The returned string is allocated with `malloc`: the caller is responsible for fr
 The buffer size is set at compile time with the `-D` flag. If it is not provided, the default value defined in the header is used.
 
 ```bash
-cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 get_next_line.c get_next_line_utils.c main.c -o gnl
+cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 get_next_line.c get_next_line_utils.c -o gnl
 ```
 
 ### Usage
@@ -68,6 +68,26 @@ int	main(void)
 	close(fd);
 	return (0);
 }
+```
+
+### test.txt
+
+```
+Ligne 1 : une ligne normale.
+Ligne 2 : une autre ligne avec des chiffres 42 1337 0.
+
+Ligne 4 : la ligne 3 était vide (juste un \n).
+
+
+Ligne 7 : deux lignes vides juste avant.
+a
+bb
+ccc
+Ligne 11 : caractères spéciaux : é à ü ñ ç œ € @#$%^&*()[]{}<>|~`
+Ligne 12 :	tabulation au début et    plusieurs    espaces.
+Ligne 13 : une très longue ligne pour tester le BUFFER_SIZE : Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Ligne 14 : après la longue ligne.
+Dernière ligne : sans retour à la ligne à la fin
 ```
 
 ### Testing
@@ -108,7 +128,7 @@ Every error path (failed `read`, failed `malloc`) frees the memory it owns befor
 - `man 2 read`, `man 3 malloc`, `man 3 free`
 - *The C Programming Language*, Kernighan & Ritchie (static storage duration, pointers)
 - [Valgrind documentation](https://valgrind.org/docs/manual/manual.html)
-- [AddressSanitizer](https://github.com/google/sanitizers/wiki/AddressSanitizerFlags)
+- [Understanding get_next_line](https://www.youtube.com/watch?v=-Mt2FdJjVno)
 
 ### Use of AI
 

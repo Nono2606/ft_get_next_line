@@ -6,7 +6,7 @@
 /*   By: nhussene <nhussene@learner.42.tech>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/23 09:23:44 by nhussene          #+#    #+#             */
-/*   Updated: 2026/11/24 15:57:29 by nhussene         ###   ########.fr       */
+/*   Updated: 2026/11/24 16:07:54 by nhussene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ char	*get_next_line(int fd)
 	return (str);
 }
 
-
+/*
 int	main(void)
 {
 	int		fd;
@@ -133,4 +133,4 @@ int	main(void)
 	printf("--- fin du fichier : %d lignes lues ---\n", i - 1);
 	close(fd);
 	return (0);
-}
+}*/
