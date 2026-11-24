@@ -6,45 +6,130 @@
 /*   By: nhussene <nhussene@learner.42.tech>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/23 09:23:44 by nhussene          #+#    #+#             */
-/*   Updated: 2026/11/23 16:19:43 by nhussene         ###   ########.fr       */
+/*   Updated: 2026/11/24 15:02:39 by nhussene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE = 100
-#endif
+static char	*ft_read_and_stash(int fd, char *stash, char *buf)
+{
+	ssize_t		nb_read;
+	size_t		i;
+	char		*tmp;
+
+	nb_read = -1;
+	i = ft_strlen(stash);
+	while (!ft_strchr(stash, '\n', i) && nb_read != 0)
+	{
+		nb_read = read(fd, buf, BUFFER_SIZE);
+		if (nb_read < 0)
+			return (free(stash), NULL);
+		if (nb_read == 0)
+			return (stash);
+		buf[nb_read] = '\0';
+		i = ft_strlen(stash);
+		tmp = ft_strjoin(stash, buf);
+		free(stash);
+		if (tmp == NULL)
+			return (NULL);
+		stash = tmp;
+	}
+	return (stash);
+}
+
+static char	*ft_extract_line(char *stash)
+{
+	char	*substring;
+	size_t	i;
+	size_t	len;
+
+	if (!stash)
+		return (NULL);
+	i = 0;
+	len = 0;
+	while (stash[len])
+		if (stash[len++] == '\n')
+			break ;
+	if (len == 0)
+		return (NULL);
+	substring = malloc((len * sizeof(char)) + 1);
+	if (substring == NULL)
+		return (NULL);
+	while (i < len)
+	{
+		substring[i] = stash[i];
+		i++;
+	}
+	return (substring[i] = '\0', substring);
+}
+
+static char	*ft_clear_stash(char *stash, size_t len)
+{
+	char	*tmp;
+	size_t	i;
+
+	if (!stash)
+		return (NULL);
+	i = 0;
+	tmp = malloc(((ft_strlen(stash) - len) * sizeof(char)) + 1);
+	if (tmp == NULL)
+	{
+		free(stash);
+		return (NULL);
+	}
+	while (stash[i + len])
+	{
+		tmp[i] = stash[i + len];
+		i++;
+	}
+	tmp[i] = 0;
+	return (free(stash), stash = tmp);
+}
 
 char	*get_next_line(int fd)
 {
-	static char	*r;
+	static char	*stash;
 	char		buf[BUFFER_SIZE + 1];
 	char		*str;
-	int			nb_read;
-	size_t		len;
 
-	if (fd == -1)
+	if (BUFFER_SIZE <= 0 || fd < 0)
 		return (NULL);
-	
-	len = 0;
-	while (!ft_strrchr(r, '\n') || nb_read != 0)
-	{
-		r = ft_strjoin(r, buf);
-		if (ft_strrchr(r, '\n'))
-			break ;
-		nb_read = read (fd, buf, BUFFER_SIZE);
-	}
-	str = malloc(ft_substr());
-	if (r)
-	{
-		str = ;
-		r = ft_substr(buf, len, BUFFER_SIZE);
-	}
-	else
-	{
-		str = ft_substr(buf, 0, len);
-		r = ft_substr(buf, len, BUFFER_SIZE);
-	}
+	str = NULL;
+	if (!ft_strchr(stash, '\n', 0))
+		stash = ft_read_and_stash(fd, stash, buf);
+	if (!stash)
+		return (NULL);
+	str = ft_extract_line(stash);
+	if (!str)
+		return (free(stash), stash = NULL, NULL);
+	stash = ft_clear_stash(stash, ft_strlen(str));
+	if (!stash)
+		return (free(str), NULL);
 	return (str);
 }
+
+/*
+int	main(void)
+{
+	int		fd;
+	char	*line;
+	int		i;
+
+	fd = open("test.txt", O_RDONLY);
+	if (fd < 0)
+	{
+		perror("open");
+		return (1);
+	}
+	i = 1;
+	while ((line = get_next_line(fd)) != NULL)
+	{
+		printf("\e[36m%d : [\e[0m%s\e[36m]\e[0m\n", i, line);
+		free(line);
+		i++;
+	}
+	printf("--- fin du fichier : %d lignes lues ---\n", i - 1);
+	close(fd);
+	return (0);
+}*/
