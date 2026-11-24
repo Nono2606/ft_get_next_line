@@ -6,7 +6,7 @@
 /*   By: nhussene <nhussene@learner.42.tech>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/23 09:57:19 by nhussene          #+#    #+#             */
-/*   Updated: 2026/11/24 15:03:49 by nhussene         ###   ########.fr       */
+/*   Updated: 2026/11/24 15:52:07 by nhussene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 size_t	ft_strlen(const char *str);
 char	*get_next_line(int fd);
 char	*ft_strjoin(char const *s1, char const *s2);
-int		ft_strchr(const char *str, int c, size_t start);
+int		has_newline(const char *str, int c, size_t start);
 
 //int		main(void); // temp
 

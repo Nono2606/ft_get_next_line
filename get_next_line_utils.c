@@ -6,7 +6,7 @@
 /*   By: nhussene <nhussene@learner.42.tech>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/23 09:44:54 by nhussene          #+#    #+#             */
-/*   Updated: 2026/11/24 15:03:01 by nhussene         ###   ########.fr       */
+/*   Updated: 2026/11/24 15:48:22 by nhussene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (str);
 }
 
-int	ft_strchr(const char *str, int c, size_t start)
+int	has_newline(const char *str, int c, size_t start)
 {
 	if (!str)
 		return (0);

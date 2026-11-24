@@ -6,7 +6,7 @@
 /*   By: nhussene <nhussene@learner.42.tech>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/23 09:23:44 by nhussene          #+#    #+#             */
-/*   Updated: 2026/11/24 15:02:39 by nhussene         ###   ########.fr       */
+/*   Updated: 2026/11/24 15:57:29 by nhussene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ static char	*ft_read_and_stash(int fd, char *stash, char *buf)
 	char		*tmp;
 
 	nb_read = -1;
-	i = ft_strlen(stash);
-	while (!ft_strchr(stash, '\n', i) && nb_read != 0)
+	i = 0;
+	while (!has_newline(stash, '\n', i) && nb_read != 0)
 	{
 		nb_read = read(fd, buf, BUFFER_SIZE);
 		if (nb_read < 0)
@@ -90,26 +90,27 @@ static char	*ft_clear_stash(char *stash, size_t len)
 char	*get_next_line(int fd)
 {
 	static char	*stash;
-	char		buf[BUFFER_SIZE + 1];
 	char		*str;
+	char		*buf;
 
 	if (BUFFER_SIZE <= 0 || fd < 0)
 		return (NULL);
-	str = NULL;
-	if (!ft_strchr(stash, '\n', 0))
+	buf = malloc(BUFFER_SIZE + 1);
+	if (!has_newline(stash, '\n', 0))
 		stash = ft_read_and_stash(fd, stash, buf);
 	if (!stash)
-		return (NULL);
+		return (free(buf), NULL);
 	str = ft_extract_line(stash);
 	if (!str)
-		return (free(stash), stash = NULL, NULL);
+		return (free(buf), free(stash), stash = NULL, NULL);
 	stash = ft_clear_stash(stash, ft_strlen(str));
 	if (!stash)
-		return (free(str), NULL);
+		return (free(buf), free(str), NULL);
+	free(buf);
 	return (str);
 }
 
-/*
+
 int	main(void)
 {
 	int		fd;
@@ -125,11 +126,11 @@ int	main(void)
 	i = 1;
 	while ((line = get_next_line(fd)) != NULL)
 	{
-		printf("\e[36m%d : [\e[0m%s\e[36m]\e[0m\n", i, line);
+		printf("\e[36m%d : [\e[0m%s\e[36m\e[0m", i, line);
 		free(line);
 		i++;
 	}
 	printf("--- fin du fichier : %d lignes lues ---\n", i - 1);
 	close(fd);
 	return (0);
-}*/
+}
