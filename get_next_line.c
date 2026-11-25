@@ -6,7 +6,7 @@
 /*   By: nhussene <nhussene@learner.42.tech>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/23 09:23:44 by nhussene          #+#    #+#             */
-/*   Updated: 2026/11/24 16:07:54 by nhussene         ###   ########.fr       */
+/*   Updated: 2026/11/25 08:45:55 by nhussene         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,18 +95,22 @@ char	*get_next_line(int fd)
 
 	if (BUFFER_SIZE <= 0 || fd < 0)
 		return (NULL);
-	buf = malloc(BUFFER_SIZE + 1);
 	if (!has_newline(stash, '\n', 0))
+	{
+		buf = malloc(BUFFER_SIZE + 1);
+		if (buf == NULL)
+			return (free(stash), stash = NULL, NULL);
 		stash = ft_read_and_stash(fd, stash, buf);
+		free(buf);
+	}
 	if (!stash)
-		return (free(buf), NULL);
+		return (NULL);
 	str = ft_extract_line(stash);
 	if (!str)
-		return (free(buf), free(stash), stash = NULL, NULL);
+		return (free(stash), stash = NULL, NULL);
 	stash = ft_clear_stash(stash, ft_strlen(str));
 	if (!stash)
-		return (free(buf), free(str), NULL);
-	free(buf);
+		return (free(str), NULL);
 	return (str);
 }
 
